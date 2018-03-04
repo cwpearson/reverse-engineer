@@ -32,7 +32,7 @@ inline void rtAssert(CUresult code, const char *file, int line, bool abort = tru
   }
 }
 
-const size_t N = 1 * 1024 * 1024;
+const size_t N = 8 * 1024 * 1024;
 
 void call1(float *h, float *d) {
   RT_CHECK(cuMemcpyHtoD((uintptr_t)d, h, N * sizeof(float)));
