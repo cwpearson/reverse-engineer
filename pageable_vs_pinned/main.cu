@@ -57,6 +57,7 @@ void call2p(float *d, float *h) {
 
 int main(void) {
     float *h = new float[N];
+    assert((N == 0) || (h != nullptr));
     float *hp;
     float *d = nullptr; 
 
@@ -69,12 +70,22 @@ int main(void) {
     assert(dladdr(cudaMallocAddr, &info));
     fprintf(stderr, "%s @ %p\n", info.dli_fname, info.dli_fbase);
 
-    call1(h, d);
-    call1p(hp, d);
-    call2(d, h);
-    call2p(d, hp);
+  RT_CHECK(cuMemcpyHtoD((uintptr_t)d, h, N * sizeof(float)));
+  RT_CHECK(cuMemcpyDtoH(h, (uintptr_t)d, N * sizeof(float)));
+  RT_CHECK(cuMemcpyHtoD((uintptr_t)d, h, N * sizeof(float)));
+  RT_CHECK(cuMemcpyDtoH(h, (uintptr_t)d, N * sizeof(float)));
+    
+  RT_CHECK(cuMemcpyHtoD((uintptr_t)d, h, N * sizeof(float)));
+  RT_CHECK(cuMemcpyHtoD((uintptr_t)d, h, N * sizeof(float)));
+  RT_CHECK(cuMemcpyDtoH(h, (uintptr_t)d, N * sizeof(float)));
+  RT_CHECK(cuMemcpyDtoH(h, (uintptr_t)d, N * sizeof(float)));
+  RT_CHECK(cuMemcpyHtoD((uintptr_t)d, h, N * sizeof(float)));
+  RT_CHECK(cuMemcpyHtoD((uintptr_t)d, h, N * sizeof(float)));
+  RT_CHECK(cuMemcpyDtoH(h, (uintptr_t)d, N * sizeof(float)));
+  RT_CHECK(cuMemcpyDtoH(h, (uintptr_t)d, N * sizeof(float)));
 
     delete[] h;
     CUDA_CHECK(cudaFree(d));
+    CUDA_CHECK(cudaFreeHost(hp));
     return 0;
 }
