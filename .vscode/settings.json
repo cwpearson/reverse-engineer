@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.cu": "cpp",
+        "*.hu": "cpp",
+        "*.cuh": "cpp",
+        "system_error": "cpp"
+    }
+}
