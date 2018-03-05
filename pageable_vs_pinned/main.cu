@@ -38,6 +38,26 @@ inline void rtAssert(CUresult code, const char *file, int line, bool abort = tru
   }
 }
 
+#define DH_BODY DR_CHECK(cuMemcpyDtoH(h, (uintptr_t)d, n * sizeof(float)))
+#define HD_BODY DR_CHECK(cuMemcpyHtoD((uintptr_t)d, h, n * sizeof(float)))
+
+void dh1(float *h, const float*d, const size_t n) {
+  DH_BODY;
+}
+void dh2(float *h, const float*d, const size_t n) {
+  DH_BODY;
+}
+
+void hd1(float *d, const float*h, const size_t n) {
+  HD_BODY;
+}
+void hd2(float *d, const float*h, const size_t n) {
+  HD_BODY;
+}
+
+#undef DH_BODY
+#undef HD_BODY
+
 const size_t N = 8 * 1024 * 1024;
 
 void touch(float *f, const size_t e, const size_t n) {
@@ -139,9 +159,9 @@ int main(void) {
     touch(hpg, pageSize, N);
     DR_CHECK(cuMemcpyDtoH(hpg, (uintptr_t)d[i], N * sizeof(float)));
     touch(hpg, pageSize, N);
-    DR_CHECK(cuMemcpyHtoD((uintptr_t)d[i], hpg, N * sizeof(float)));
+    hd1(d[i], hpg, N);
     touch(hpg, pageSize, N);
-    DR_CHECK(cuMemcpyHtoD((uintptr_t)d[i], hpg, N * sizeof(float)));
+    hd2(d[i], hpg, N);
     touch(hpg, pageSize, N);
     DR_CHECK(cuMemcpyDtoH(hpg, (uintptr_t)d[i], N * sizeof(float)));
     touch(hpg, pageSize, N);
