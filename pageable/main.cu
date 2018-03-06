@@ -48,19 +48,12 @@ void dh2(float *h, const float*d, const size_t n) {
   DH_BODY;
 }
 
-void hdpg1(float *d, const float*h, const size_t n) {
+void hd1(float *d, const float*h, const size_t n) {
   HD_BODY;
 }
-void hdpg2(float *d, const float*h, const size_t n) {
+void hd2(float *d, const float*h, const size_t n) {
   HD_BODY;
 }
-void hdpn1(float *d, const float*h, const size_t n) {
-  HD_BODY;
-}
-void hdpn2(float *d, const float*h, const size_t n) {
-  HD_BODY;
-}
-
 #undef DH_BODY
 #undef HD_BODY
 
@@ -85,8 +78,6 @@ int main(void) {
   // set up host allocations
   float *hpg = new float[N];
   assert((N == 0) || (hpg != nullptr));
-  float *hpn;
-  CUDA_CHECK(cudaMallocHost(&hpn, N * sizeof(float)));
 
   // setup device allocations
   float **d = new float*[numDevices];
@@ -95,49 +86,10 @@ int main(void) {
     CUDA_CHECK(cudaMalloc(&d[i], N * sizeof(float)));
   }
 
-  void *handle = dlopen("libcuda.so", RTLD_NOW);
-  void *cudaMallocAddr = dlsym(handle, "cuMemAlloc_v2");
-  Dl_info info;
-  assert(dladdr(cudaMallocAddr, &info));
-  fprintf(stderr, "%s @ %p\n", info.dli_fname, info.dli_fbase);
-
   // Touch host memory
-  touch(hpn, pageSize, N);
   touch(hpg, pageSize, N);
 
   // memcpy sequence
-  for (int i = 0; i < numDevices; ++i) {
-    std::stringstream buffer;
-    buffer << "pn cpu->" << i;
-    nvtxRangePush(buffer.str().c_str());
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyHtoD((uintptr_t)d[i], hpn, N * sizeof(float)));
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyDtoH(hpn, (uintptr_t)d[i], N * sizeof(float)));
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyHtoD((uintptr_t)d[i], hpn, N * sizeof(float)));
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyDtoH(hpn, (uintptr_t)d[i], N * sizeof(float)));
-    
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyHtoD((uintptr_t)d[i], hpn, N * sizeof(float)));
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyHtoD((uintptr_t)d[i], hpn, N * sizeof(float)));
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyDtoH(hpn, (uintptr_t)d[i], N * sizeof(float)));
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyDtoH(hpn, (uintptr_t)d[i], N * sizeof(float)));
-    touch(hpn, pageSize, N);
-    hdpn1(d[i], hpn, N);
-    touch(hpn, pageSize, N);
-    hdpn2(d[i], hpn, N);
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyDtoH(hpn, (uintptr_t)d[i], N * sizeof(float)));
-    touch(hpn, pageSize, N);
-    DR_CHECK(cuMemcpyDtoH(hpn, (uintptr_t)d[i], N * sizeof(float)));
-    nvtxRangePop();
-  }
-
   for (int i = 0; i < numDevices; ++i) {
     std::stringstream buffer;
     buffer << "pg cpu->" << i;
@@ -165,9 +117,9 @@ int main(void) {
     touch(hpg, pageSize, N);
     DR_CHECK(cuMemcpyDtoH(hpg, (uintptr_t)d[i], N * sizeof(float)));
     touch(hpg, pageSize, N);
-    hdpg1(d[i], hpg, N);
+    hd1(d[i], hpg, N);
     touch(hpg, pageSize, N);
-    hdpg2(d[i], hpg, N);
+    hd2(d[i], hpg, N);
     touch(hpg, pageSize, N);
     DR_CHECK(cuMemcpyDtoH(hpg, (uintptr_t)d[i], N * sizeof(float)));
     touch(hpg, pageSize, N);
@@ -176,8 +128,7 @@ int main(void) {
     nvtxRangePop();
   }
 
-    // delete[] h;
+    delete[] hpg;
     // CUDA_CHECK(cudaFree(d));
-    // CUDA_CHECK(cudaFreeHost(hp));
     return 0;
 }

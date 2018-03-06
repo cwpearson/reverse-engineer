@@ -1,0 +1,43 @@
+==13280== Callgrind, a call-graph generating cache profiler
+==13280== Copyright (C) 2002-2015, and GNU GPL'd, by Josef Weidendorfer et al.
+==13280== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==13280== Command: pinned/main
+==13280== Parent PID: 13221
+==13280== 
+==13280== For interactive control, run 'callgrind_control -h'.
+==13280== Warning: noted but unhandled ioctl 0x30000001 with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== Warning: noted but unhandled ioctl 0x27 with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== Warning: noted but unhandled ioctl 0x7ff with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== Warning: noted but unhandled ioctl 0x25 with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== Warning: noted but unhandled ioctl 0x37 with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== Warning: noted but unhandled ioctl 0x17 with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== Warning: noted but unhandled ioctl 0x19 with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== Warning: noted but unhandled ioctl 0x21 with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== Warning: noted but unhandled ioctl 0x1b with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== brk segment overflow in thread #1: can't grow to 0x4a42000
+==13280== Warning: noted but unhandled ioctl 0x42 with no size/direction hints.
+==13280==    This could cause spurious value errors to appear.
+==13280==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==13280== 
+==13280== Events    : Ir
+==13280== Collected : 112157805
+==13280== 
+==13280== I   refs:      112,157,805

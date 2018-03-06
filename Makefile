@@ -1,12 +1,14 @@
 NVCC = nvcc
 
 TARGETS = \
-pageable_vs_pinned/main
+pageable/main \
+pageable_vs_pinned/main \
+pinned/main
 
 all: $(TARGETS) 
 
-pageable_vs_pinned/main: pageable_vs_pinned/main.cu
+%: %.cu
 	$(NVCC) $^ -std=c++11 -G -g -o $@ -ldl -lcuda -lnvToolsExt
 
 clean:
-	rm -f *.o main
+	rm -f *.o $(TARGETS)
